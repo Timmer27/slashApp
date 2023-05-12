@@ -59,16 +59,16 @@ class _ControllPannalState extends State<ControllPannal> {
   // List<String> _contentsAll = [''];
   // String _contents = '';
 
-  // to be deleted - 나중에 전역변수로 ㄱㄱ
   List<String> _contentsAll = [
-    "안녕하세요.",
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "이건 테스트입니다.",
-    "잘 될까요?.",
-    "제발..."
+    "Hello.",
+    "It is a test file.",
+    "It shows contents.",
+    "I wish there is no error.",
+    "Please!",
+    "End of contents"
   ];
-  String _contents = '안녕하세요ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ이건 테스트입니다 잘될까요?> ㅈㅂ...';
-
+  String _contents =
+      'Hello. It is a test file. It shows contents. I wish there is no error. Please! End of contents';
   String _showContent = '';
 
   void _autoPlay() {
