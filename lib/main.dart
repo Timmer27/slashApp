@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:slash/mainPage/FontFileCounterModel.dart';
 import 'package:slash/mainPage/mainPage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (_) => FontCounterModel(),
-    child: MyApp(),
-  ));
+  runApp(
+    MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {

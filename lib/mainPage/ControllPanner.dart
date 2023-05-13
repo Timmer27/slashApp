@@ -6,7 +6,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:slash/mainPage/FontFileCounterModel.dart';
 
 class ControllPannal extends StatefulWidget {
   final double mediaFontSize;
@@ -46,8 +45,8 @@ class _ControllPannalState extends State<ControllPannal> {
     1500,
     1600
   ];
-  final List<int> words = [1, 2, 3, 4, 5, 6];
-  int _selectedWords = 1;
+  // final List<int> words = [1, 2, 3, 4, 5, 6];
+  // int _selectedWords = 1;
   int _selectedFontSize = 500;
   int _durationSpeed = 1000;
 
@@ -211,91 +210,91 @@ class _ControllPannalState extends State<ControllPannal> {
                 ],
               ),
             ),
-
-            SizedBox(
-              child: Row(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                    child: Text(
-                      "WORDS",
-                      style: TextStyle(fontSize: widget.mediaFontSize),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                    child: Container(
-                      color: Colors.white,
-                      child: DropdownButton(
-                        dropdownColor: Colors.white,
-                        menuMaxHeight: widget.menuMaxHeight,
-                        itemHeight: widget.itemHeightSize,
-                        items: words
-                            .map((val) => DropdownMenuItem(
-                                  child: SizedBox(
-                                      child: Text(
-                                    val.toString() + " word",
-                                    style: TextStyle(
-                                        fontSize: widget.mediaFontSize),
-                                  )),
-                                  value: val,
-                                ))
-                            .toList(),
-                        value: _selectedWords,
-                        onChanged: (val) => setState(() {
-                          if (val != null) {
-                            // null 여부 검사
-                            setState(() {
-                              _selectedWords = val;
-                              // 워드 별 배속 변경
-                              _durationSpeed = 1000 - (val * 100);
-                            });
-                          }
-                        }),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // words cnt check
+            // SizedBox(
+            //   child: Row(
+            //     children: [
+            //       Padding(
+            //         padding:
+            //             EdgeInsets.symmetric(horizontal: widget.paddingSize),
+            //         child: Text(
+            //           "WORDS",
+            //           style: TextStyle(fontSize: widget.mediaFontSize),
+            //         ),
+            //       ),
+            //       Padding(
+            //         padding:
+            //             EdgeInsets.symmetric(horizontal: widget.paddingSize),
+            //         child: Container(
+            //           color: Colors.white,
+            //           child: DropdownButton(
+            //             dropdownColor: Colors.white,
+            //             menuMaxHeight: widget.menuMaxHeight,
+            //             itemHeight: widget.itemHeightSize,
+            //             items: words
+            //                 .map((val) => DropdownMenuItem(
+            //                       child: SizedBox(
+            //                           child: Text(
+            //                         val.toString() + " word",
+            //                         style: TextStyle(
+            //                             fontSize: widget.mediaFontSize),
+            //                       )),
+            //                       value: val,
+            //                     ))
+            //                 .toList(),
+            //             value: _selectedWords,
+            //             onChanged: (val) => setState(() {
+            //               if (val != null) {
+            //                 // null 여부 검사
+            //                 setState(() {
+            //                   _selectedWords = val;
+            //                   // 워드 별 배속 변경
+            //                   _durationSpeed = 1000 - (val * 100);
+            //                 });
+            //               }
+            //             }),
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
             // practice speed
-            SizedBox(
-              child: Row(
-                children: [
-                  // const Text("평균 250 이내로 연습"),
-                  Container(
-                    color: Colors.white,
-                    width:
-                        widget.screenWidth * 0.25, // widget.mediaFontSize * 5,
-                    child: TextField(
-                      style: TextStyle(fontSize: widget.mediaFontSize),
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        labelText: "워딩 숫자",
-                        hintText: "평균 250 이내로 연습",
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(
-                            RegExp(r'^[1-9][0-9]{0,2}$|^[0-9]$')),
-                      ],
-                      onChanged: (value) => setState(() {
-                        int intVal = int.parse(value);
-                        if (intVal > 900) {
-                          _durationSpeed = 100;
-                        }
-                        _durationSpeed = 1000 - int.parse(value);
-                      }),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // SizedBox(
+            //   child: Row(
+            //     children: [
+            //       // const Text("평균 250 이내로 연습"),
+            //       Container(
+            //         color: Colors.white,
+            //         width:
+            //             widget.screenWidth * 0.25, // widget.mediaFontSize * 5,
+            //         child: TextField(
+            //           style: TextStyle(fontSize: widget.mediaFontSize),
+            //           decoration: InputDecoration(
+            //             fillColor: Colors.white,
+            //             contentPadding:
+            //                 EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            //             labelText: "워딩 숫자",
+            //             hintText: "평균 250 이내로 연습",
+            //             border: OutlineInputBorder(),
+            //           ),
+            //           keyboardType: TextInputType.number,
+            //           inputFormatters: <TextInputFormatter>[
+            //             FilteringTextInputFormatter.allow(
+            //                 RegExp(r'^[1-9][0-9]{0,2}$|^[0-9]$')),
+            //           ],
+            //           onChanged: (value) => setState(() {
+            //             int intVal = int.parse(value);
+            //             if (intVal > 900) {
+            //               _durationSpeed = 100;
+            //             }
+            //             _durationSpeed = 1000 - int.parse(value);
+            //           }),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
           ],
         ),
         Row(
@@ -350,10 +349,10 @@ class _ControllPannalState extends State<ControllPannal> {
             ),
 
             // file play button - auto start
-            IconButton(
-                iconSize: widget.mediaFontSize * 1.2,
-                onPressed: () => {_autoPlay()},
-                icon: Icon(Icons.play_arrow)),
+            // IconButton(
+            //     iconSize: widget.mediaFontSize * 1.2,
+            //     onPressed: () => {_autoPlay()},
+            //     icon: Icon(Icons.play_arrow)),
 
             // file play arrow left
             IconButton(

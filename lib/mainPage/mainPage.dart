@@ -6,9 +6,6 @@ import 'package:charset_converter/charset_converter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:slash/mainPage/FileControllPanner.dart';
-import 'package:slash/mainPage/FontFileCounterModel.dart';
 import 'package:slash/mainPage/ControllPanner.dart';
 
 class MainPage extends StatefulWidget {
@@ -20,12 +17,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // final List<int> fontSize = [300, 400, 500, 600, 700, 800, 900, 1000];
-  // int _selectedFontSize = 500;
-
-  final List<int> words = [1, 2, 3, 4, 5];
-  int _selectedWords = 1;
-
   String _fileName = '';
 
   @override
@@ -61,20 +52,22 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          child: Column(
-            children: [
-              // text size && words
-              ControllPannal(
-                  mediaFontSize: mediaFontSize,
-                  paddingSize: paddingSize,
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  itemHeightSize: itemHeightSize,
-                  menuMaxHeight: menuMaxHeight),
-            ],
+      body: SingleChildScrollView(
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Column(
+              children: [
+                // text size && words
+                ControllPannal(
+                    mediaFontSize: mediaFontSize,
+                    paddingSize: paddingSize,
+                    screenHeight: screenHeight,
+                    screenWidth: screenWidth,
+                    itemHeightSize: itemHeightSize,
+                    menuMaxHeight: menuMaxHeight),
+              ],
+            ),
           ),
         ),
       ),
