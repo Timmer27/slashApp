@@ -31,11 +31,11 @@ class _MainPageState extends State<MainPage> {
     double menuMaxHeight = screenHeight / 3;
 
     if (screenWidth < 700) {
-      mediaFontSize = screenWidth * 0.020;
-      itemHeightSize = 65.0;
+      mediaFontSize = screenWidth * 0.025;
+      itemHeightSize = 50.0;
       paddingSize = 0.5;
     } else if (screenWidth < 1050) {
-      mediaFontSize = screenWidth * 0.020;
+      mediaFontSize = screenWidth * 0.030;
       itemHeightSize = 65.0;
       paddingSize = 2.0;
     } else if (screenWidth < 2000) {
@@ -55,7 +55,8 @@ class _MainPageState extends State<MainPage> {
       body: SingleChildScrollView(
         child: Container(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Column(
               children: [
                 // text size && words

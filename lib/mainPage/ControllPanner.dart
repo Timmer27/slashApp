@@ -55,20 +55,20 @@ class _ControllPannalState extends State<ControllPannal> {
   Timer? timer;
 
   // orgin
-  // List<String> _contentsAll = [''];
-  // String _contents = '';
-
-  List<String> _contentsAll = [
-    "Hello.",
-    "It is a test file.",
-    "It shows contents.",
-    "I wish there is no error.",
-    "Please!",
-    "End of contents"
-  ];
-  String _contents =
-      'Hello. It is a test file. It shows contents. I wish there is no error. Please! End of contents';
+  List<String> _contentsAll = [''];
+  String _contents = '';
   String _showContent = '';
+
+  // List<String> _contentsAll = [
+  //   "Hello.",
+  //   "It is a test file.",
+  //   "It shows contents.",
+  //   "I wish there is no error.",
+  //   "Please!",
+  //   "End of contents"
+  // ];
+  // String _contents =
+  //     'Hello. It is a test file. It shows contents. I wish there is no error. Please! End of contents';
 
   void _autoPlay() {
     // int count = wordCnt;
@@ -94,8 +94,8 @@ class _ControllPannalState extends State<ControllPannal> {
           _showContent = _contentsAll[0];
           wordCnt++;
         } else {
-          _showContent = _contentsAll[wordCnt];
           wordCnt++;
+          _showContent = _contentsAll[wordCnt];
         }
       });
     }
@@ -297,123 +297,101 @@ class _ControllPannalState extends State<ControllPannal> {
             // ),
           ],
         ),
-        Row(
-          children: [
-            // load text files
-            SizedBox(
-              child: Row(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: widget.paddingSize),
+        // load text files
+        Align(
+          alignment: Alignment.topLeft,
+          child: Wrap(
+            direction: Axis.horizontal, // 나열 방향
+            alignment: WrapAlignment.start, // 정렬 방식
+            spacing: 4, // 좌우 간격
+            runSpacing: 0.5, // 상하 간격
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: widget.paddingSize),
+                child: Text(
+                  "FILE NAME",
+                  style: TextStyle(fontSize: widget.mediaFontSize),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: widget.paddingSize),
+                child: SizedBox(
+                  width: widget.mediaFontSize * 10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black,
+                          width: 2,
+                        ),
+                      ),
+                    ),
                     child: Text(
-                      "FILE NAME",
+                      _fileName,
                       style: TextStyle(fontSize: widget.mediaFontSize),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                    child: SizedBox(
-                      width: widget.mediaFontSize * 10,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.black,
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          _fileName,
-                          style: TextStyle(fontSize: widget.mediaFontSize),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                    child: TextButton(
-                      onPressed: () => _openFile(),
-                      child: Text(
-                        'FILE OPEN',
-                        style: TextStyle(fontSize: widget.mediaFontSize),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-
-            // file play button - auto start
-            // IconButton(
-            //     iconSize: widget.mediaFontSize * 1.2,
-            //     onPressed: () => {_autoPlay()},
-            //     icon: Icon(Icons.play_arrow)),
-
-            // file play arrow left
-            IconButton(
-                iconSize: widget.mediaFontSize * 1.2,
-                onPressed: () => {_decrementWordCnt()},
-                icon: Icon(Icons.keyboard_double_arrow_left_rounded)),
-
-            // file play arrow right
-            IconButton(
-              iconSize: widget.mediaFontSize * 1.2,
-              onPressed: () {
-                if (_contentsAll.length > wordCnt - 1 && wordCnt >= 0) {
-                  _incrementWordCnt();
-                }
-              },
-              icon: Icon(Icons.keyboard_double_arrow_right_rounded),
-            ),
-
-            // reset button
-            SizedBox(
-              child: Row(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                    child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _resetWordCnt();
-                        });
-                      },
-                      child: Text(
-                        'RESET',
-                        style: TextStyle(fontSize: widget.mediaFontSize),
-                      ),
-                    ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: widget.paddingSize),
+                child: TextButton(
+                  onPressed: () => _openFile(),
+                  child: Text(
+                    'FILE OPEN',
+                    style: TextStyle(fontSize: widget.mediaFontSize),
                   ),
-                ],
+                ),
               ),
-            ),
+              IconButton(
+                  iconSize: widget.mediaFontSize * 1.5,
+                  padding: EdgeInsets.all(0.0),
+                  onPressed: () => {_decrementWordCnt()},
+                  icon: Icon(Icons.keyboard_double_arrow_left_rounded)),
 
-            // check raw text file
-            SizedBox(
-              child: Row(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                    child: TextButton(
-                      onPressed: () => {_findAll()},
-                      child: Text(
-                        '본문보기',
-                        style: TextStyle(fontSize: widget.mediaFontSize),
-                      ),
-                    ),
-                  ),
-                ],
+              // file play arrow right
+              IconButton(
+                iconSize: widget.mediaFontSize * 1.5,
+                padding: EdgeInsets.all(0.0),
+                onPressed: () {
+                  if (_contentsAll.length > wordCnt - 1 && wordCnt >= 0) {
+                    _incrementWordCnt();
+                  }
+                },
+                icon: Icon(Icons.keyboard_double_arrow_right_rounded),
               ),
-            ),
-          ],
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _resetWordCnt();
+                  });
+                },
+                child: Text(
+                  'RESET',
+                  style: TextStyle(fontSize: widget.mediaFontSize),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _findAll();
+                  });
+                },
+                child: Text(
+                  '본문보기',
+                  style: TextStyle(fontSize: widget.mediaFontSize),
+                ),
+              ),
+            ],
+          ),
         ),
+
+        // file play button - auto start
+        // IconButton(
+        //     iconSize: widget.mediaFontSize * 1.2,
+        //     onPressed: () => {_autoPlay()},
+        //     icon: Icon(Icons.play_arrow)),
         // Text(_showContent)
         // Flexible(
         // child:
