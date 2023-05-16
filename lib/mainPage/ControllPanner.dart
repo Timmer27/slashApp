@@ -162,52 +162,55 @@ class _ControllPannalState extends State<ControllPannal> {
         Row(
           children: [
             // font size selection dropdown button
-            SizedBox(
-              child: Row(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                    child: Text(
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: widget.paddingSize,
+              ),
+              child: SizedBox(
+                child: Row(
+                  children: [
+                    Text(
                       "FONT SIZE",
                       style: TextStyle(fontSize: widget.mediaFontSize),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: widget.paddingSize,
-                        horizontal: widget.screenHeight / 30),
-                    child: Container(
-                      color: Colors.white,
-                      child: DropdownButton(
-                        dropdownColor: Colors.white,
-                        menuMaxHeight: widget.menuMaxHeight,
-                        // widget.mediaFontSize * (_contentsAll.length + 6),
-                        itemHeight: widget.itemHeightSize,
-                        items: fontSize
-                            .map((val) => DropdownMenuItem(
-                                  child: SizedBox(
-                                    child: Text(
-                                      val.toString(),
-                                      style: TextStyle(
-                                          fontSize: widget.mediaFontSize),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: widget.screenHeight / 30),
+                      child: Container(
+                        color: Colors.white,
+                        child: DropdownButton(
+                          isDense: true,
+                          elevation: 0,
+                          underline: const SizedBox(),
+                          dropdownColor: Colors.white,
+                          menuMaxHeight: widget.menuMaxHeight,
+                          // widget.mediaFontSize * (_contentsAll.length + 6),
+                          itemHeight: 48,
+                          items: fontSize
+                              .map((val) => DropdownMenuItem(
+                                    child: SizedBox(
+                                      child: Text(
+                                        val.toString(),
+                                        style: TextStyle(
+                                            fontSize: widget.mediaFontSize),
+                                      ),
                                     ),
-                                  ),
-                                  value: val,
-                                ))
-                            .toList(),
-                        value: _selectedFontSize,
-                        onChanged: (val) {
-                          if (val != null) {
-                            // null 여부 검사
-                            _selectedFontSize = val;
-                            setState(() {});
-                          }
-                        },
+                                    value: val,
+                                  ))
+                              .toList(),
+                          value: _selectedFontSize,
+                          onChanged: (val) {
+                            if (val != null) {
+                              // null 여부 검사
+                              _selectedFontSize = val;
+                              setState(() {});
+                            }
+                          },
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
             // words cnt check
@@ -306,7 +309,8 @@ class _ControllPannalState extends State<ControllPannal> {
             alignment: Alignment.centerLeft,
             child: Wrap(
               direction: Axis.horizontal, // 나열 방향
-              alignment: WrapAlignment.start, // 정렬 방식
+              // alignment: WrapAlignment.start, // 정렬 방식
+              alignment: WrapAlignment.start,
               spacing: 4, // 좌우 간격
               runSpacing: 0.5, // 상하 간격
               children: [
@@ -325,7 +329,7 @@ class _ControllPannalState extends State<ControllPannal> {
                         border: Border(
                           bottom: BorderSide(
                             color: Colors.black,
-                            width: 2,
+                            width: 1,
                           ),
                         ),
                       ),
@@ -338,21 +342,37 @@ class _ControllPannalState extends State<ControllPannal> {
                 ),
                 TextButton(
                   onPressed: () => _openFile(),
+                  style: TextButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
                   child: Text(
                     'FILE OPEN',
                     style: TextStyle(fontSize: widget.mediaFontSize),
                   ),
                 ),
+
                 IconButton(
                     iconSize: widget.mediaFontSize * 1.5,
-                    padding: EdgeInsets.all(0.0),
+                    padding: EdgeInsets.only(
+                      left: widget.screenWidth / 100,
+                      right: widget.screenWidth / 100,
+                      bottom: widget.screenWidth / 100,
+                    ),
+                    constraints: BoxConstraints(), // constraints
                     onPressed: () => {_decrementWordCnt()},
                     icon: Icon(Icons.keyboard_double_arrow_left_rounded)),
 
                 // file play arrow right
                 IconButton(
                   iconSize: widget.mediaFontSize * 1.5,
-                  padding: EdgeInsets.all(0.0),
+                  padding: EdgeInsets.only(
+                    left: widget.screenWidth / 100,
+                    right: widget.screenWidth / 100,
+                    bottom: widget.screenWidth / 100,
+                  ),
+                  constraints: BoxConstraints(), // constraints
                   onPressed: () {
                     if (_contentsAll.length > wordCnt - 1 && wordCnt >= 0) {
                       _incrementWordCnt();
@@ -366,6 +386,13 @@ class _ControllPannalState extends State<ControllPannal> {
                       _resetWordCnt();
                     });
                   },
+                  style: TextButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: widget.screenWidth / 100,
+                        vertical: widget.screenWidth / 100),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
                   child: Text(
                     'RESET',
                     style: TextStyle(fontSize: widget.mediaFontSize),
@@ -377,6 +404,13 @@ class _ControllPannalState extends State<ControllPannal> {
                       _findAll();
                     });
                   },
+                  style: TextButton.styleFrom(
+                    minimumSize: Size.zero,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: widget.screenWidth / 100,
+                        vertical: widget.screenWidth / 100),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
                   child: Text(
                     '본문보기',
                     style: TextStyle(fontSize: widget.mediaFontSize),
@@ -392,9 +426,7 @@ class _ControllPannalState extends State<ControllPannal> {
         //     iconSize: widget.mediaFontSize * 1.2,
         //     onPressed: () => {_autoPlay()},
         //     icon: Icon(Icons.play_arrow)),
-        // Text(_showContent)
-        // Flexible(
-        // child:
+
         Padding(
           padding: EdgeInsets.all(widget.paddingSize),
           child: Container(

@@ -31,7 +31,7 @@ class _MainPageState extends State<MainPage> {
     double menuMaxHeight = 0.0;
 
     if (screenWidth < 700) {
-      mediaFontSize = screenWidth * 0.025;
+      mediaFontSize = screenWidth * 0.03;
       itemHeightSize = 50.0;
       paddingSize = 0.5;
       menuMaxHeight = 500;
@@ -54,7 +54,10 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: TextStyle(fontSize: mediaFontSize),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
