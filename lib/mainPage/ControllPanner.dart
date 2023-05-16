@@ -175,8 +175,8 @@ class _ControllPannalState extends State<ControllPannal> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: widget.paddingSize,
-                        vertical: widget.paddingSize),
+                        vertical: widget.paddingSize,
+                        horizontal: widget.screenHeight / 30),
                     child: Container(
                       color: Colors.white,
                       child: DropdownButton(
@@ -298,92 +298,92 @@ class _ControllPannalState extends State<ControllPannal> {
           ],
         ),
         // load text files
-        Align(
-          alignment: Alignment.topLeft,
-          child: Wrap(
-            direction: Axis.horizontal, // 나열 방향
-            alignment: WrapAlignment.start, // 정렬 방식
-            spacing: 4, // 좌우 간격
-            runSpacing: 0.5, // 상하 간격
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                child: Text(
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: widget.paddingSize,
+              vertical: widget.screenHeight / 30),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              direction: Axis.horizontal, // 나열 방향
+              alignment: WrapAlignment.start, // 정렬 방식
+              spacing: 4, // 좌우 간격
+              runSpacing: 0.5, // 상하 간격
+              children: [
+                Text(
                   "FILE NAME",
                   style: TextStyle(fontSize: widget.mediaFontSize),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                child: SizedBox(
-                  width: widget.mediaFontSize * 10,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.black,
-                          width: 2,
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: widget.screenWidth / 80),
+                  child: SizedBox(
+                    width: widget.mediaFontSize * 10,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.black,
+                            width: 2,
+                          ),
                         ),
                       ),
-                    ),
-                    child: Text(
-                      _fileName,
-                      style: TextStyle(fontSize: widget.mediaFontSize),
+                      child: Text(
+                        _fileName,
+                        style: TextStyle(fontSize: widget.mediaFontSize),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: widget.paddingSize),
-                child: TextButton(
+                TextButton(
                   onPressed: () => _openFile(),
                   child: Text(
                     'FILE OPEN',
                     style: TextStyle(fontSize: widget.mediaFontSize),
                   ),
                 ),
-              ),
-              IconButton(
+                IconButton(
+                    iconSize: widget.mediaFontSize * 1.5,
+                    padding: EdgeInsets.all(0.0),
+                    onPressed: () => {_decrementWordCnt()},
+                    icon: Icon(Icons.keyboard_double_arrow_left_rounded)),
+
+                // file play arrow right
+                IconButton(
                   iconSize: widget.mediaFontSize * 1.5,
                   padding: EdgeInsets.all(0.0),
-                  onPressed: () => {_decrementWordCnt()},
-                  icon: Icon(Icons.keyboard_double_arrow_left_rounded)),
-
-              // file play arrow right
-              IconButton(
-                iconSize: widget.mediaFontSize * 1.5,
-                padding: EdgeInsets.all(0.0),
-                onPressed: () {
-                  if (_contentsAll.length > wordCnt - 1 && wordCnt >= 0) {
-                    _incrementWordCnt();
-                  }
-                },
-                icon: Icon(Icons.keyboard_double_arrow_right_rounded),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _resetWordCnt();
-                  });
-                },
-                child: Text(
-                  'RESET',
-                  style: TextStyle(fontSize: widget.mediaFontSize),
+                  onPressed: () {
+                    if (_contentsAll.length > wordCnt - 1 && wordCnt >= 0) {
+                      _incrementWordCnt();
+                    }
+                  },
+                  icon: Icon(Icons.keyboard_double_arrow_right_rounded),
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    _findAll();
-                  });
-                },
-                child: Text(
-                  '본문보기',
-                  style: TextStyle(fontSize: widget.mediaFontSize),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _resetWordCnt();
+                    });
+                  },
+                  child: Text(
+                    'RESET',
+                    style: TextStyle(fontSize: widget.mediaFontSize),
+                  ),
                 ),
-              ),
-            ],
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _findAll();
+                    });
+                  },
+                  child: Text(
+                    '본문보기',
+                    style: TextStyle(fontSize: widget.mediaFontSize),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
 

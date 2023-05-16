@@ -28,24 +28,28 @@ class _MainPageState extends State<MainPage> {
     double mediaFontSize = 0.0;
     double itemHeightSize = 0.0;
     double paddingSize = 0.0;
-    double menuMaxHeight = screenHeight / 3;
+    double menuMaxHeight = 0.0;
 
     if (screenWidth < 700) {
       mediaFontSize = screenWidth * 0.025;
       itemHeightSize = 50.0;
       paddingSize = 0.5;
+      menuMaxHeight = 500;
     } else if (screenWidth < 1050) {
       mediaFontSize = screenWidth * 0.030;
       itemHeightSize = 65.0;
       paddingSize = 2.0;
+      menuMaxHeight = 800;
     } else if (screenWidth < 2000) {
       mediaFontSize = screenWidth * 0.025;
       itemHeightSize = (screenWidth * 0.025) * 2;
       paddingSize = 13.0;
+      menuMaxHeight = 1000;
     } else {
       mediaFontSize = screenWidth * 0.025;
       itemHeightSize = (screenWidth * 0.025) * 2;
       paddingSize = 30.0;
+      menuMaxHeight = 1200;
     }
 
     return Scaffold(
