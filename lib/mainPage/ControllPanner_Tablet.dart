@@ -52,7 +52,10 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
   final List<int> words = [1, 2, 3, 4, 5, 6];
   // int _selectedWords = 1;
   int _selectedFontSize = 500;
-  int _durationSpeed = 1000;
+  int _durationSpeed = 1;
+
+  final TextEditingController _controller = TextEditingController();
+  // int? _countdownSeconds;
 
   String _fileName = '';
   int wordCnt = 0;
@@ -60,7 +63,7 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
 
   // orgin
   // List<String> _contentsAll = [''];
-  String _contents = '';
+  // String _contents = '';
   String _showContent = '';
 
   List<String> _contentsAll = [
@@ -72,16 +75,51 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
     "Please!",
     "End of contents"
   ];
-  // String _contents =
-  //     // _contentsAll.join(",");
-  //     'Hello. It is a test file. It shows contents. I wish there is no error. Please! End of contents';
+  String _contents =
+      // _contentsAll.join(",");
+      'Hello. It is a test file. It shows contents. I wish there is no error. Please! End of contents';
+
+  double _xPosition = 0.0;
+  double _yPosition = 0.0;
+  double _widgetSize = 50.0;
+  bool isPlaying = false; // Track whether the timer is currently running
+  bool _moveToLeft = false;
+
+  void _moveButtons() {
+    if (_moveToLeft) {
+      setState(() {
+        _xPosition = 0;
+        _moveToLeft = false;
+      });
+    } else {
+      setState(() {
+        _xPosition = MediaQuery.of(context).size.width - (_widgetSize * 2);
+        _moveToLeft = true;
+      });
+    }
+  }
+
+  void _stopAutoPlay() {
+    timer?.cancel();
+    setState(() {
+      isPlaying = !isPlaying; // Set isPlaying to false when stopping manually
+    });
+    print('stop');
+  }
 
   void _autoPlay() {
     // int count = wordCnt;
     timer?.cancel();
+
     int maxVal = _contentsAll.length;
-    wordCnt = 0;
-    timer = Timer.periodic(Duration(milliseconds: _durationSpeed), (timer) {
+    // wordCnt = 0;
+    setState(() {
+      isPlaying = !isPlaying;
+    });
+    print('test');
+    print('START');
+
+    timer = Timer.periodic(Duration(seconds: _durationSpeed), (timer) {
       if (wordCnt < maxVal) {
         setState(() {
           _showContent = _contentsAll[wordCnt];
@@ -89,10 +127,14 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
         });
       } else {
         timer.cancel();
+        setState(() {
+          isPlaying = false; // Set isPlaying to false when the timer completes
+        });
       }
-      print(wordCnt);
-      print(_durationSpeed);
     });
+    print(_durationSpeed);
+    print(wordCnt);
+    print(maxVal);
   }
 
   void _incrementWordCnt() {
@@ -116,7 +158,6 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
       wordCnt--;
       setState(() {
         _showContent = _contentsAll[wordCnt];
-        print('???');
       });
     }
   }
@@ -126,8 +167,9 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
     setState(() {
       _showContent = _contentsAll[0];
       wordCnt = 0;
-      print(wordCnt);
+      isPlaying = true;
     });
+    print(wordCnt);
   }
 
   void _findAll() {
@@ -150,12 +192,14 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
         setState(() {
           _contentsAll = rawContents.split('/');
           _contents = rawContents;
+          _fileName = filename;
+          print(filename);
+          print(_fileName);
           try {
             _showContent = _contentsAll[0];
           } catch (e) {
             _showContent = '';
           }
-          _fileName = filename;
         });
       }
     }
@@ -177,7 +221,7 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
             // font size selection dropdown button
             Flexible(
                 fit: FlexFit.tight,
-                flex: 2,
+                flex: 1,
                 child: DropdownSearch<int>(
                   items: fontSize,
                   dropdownDecoratorProps: DropDownDecoratorProps(
@@ -195,170 +239,43 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
                   },
                   selectedItem: 500,
                 )),
-            const SizedBox(
-              width: 30.0,
-            ),
             Flexible(
-                fit: FlexFit.tight,
-                flex: 2,
-                child: DropdownSearch<int>(
-                  items: const [250, 300, 350, 400, 450, 500],
-                  dropdownDecoratorProps: DropDownDecoratorProps(
-                      dropdownSearchDecoration: const InputDecoration(
-                        labelText: "Play Speed",
-                        // hintText: "country in menu mode",
-                      ),
-                      baseStyle: TextStyle(fontSize: widget.descFontSize)),
-                  onChanged: (value) => setState(() {
-                    int intVal = value ?? 300;
-                    if (intVal > 900) {
-                      _durationSpeed = 100;
-                    }
-                    _durationSpeed = 1000 - intVal;
-
-                    print(_durationSpeed);
-                  }),
-                  selectedItem: 350,
-                )),
-            const SizedBox(
-              width: 3.0,
-            ),
-            Flexible(
-              // fit: FlexFit.tight,
-              flex: 1,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _autoPlay();
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0, vertical: 18.0),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  'START',
-                  style: TextStyle(fontSize: widget.mediaFontSize),
+              flex: 3,
+              child: TextFormField(
+                initialValue: _fileName,
+                enabled: false, // Disable user input
+                decoration: InputDecoration(
+                  labelText: _fileName,
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),
-            const SizedBox(
-              width: 3.0,
-            ),
             Flexible(
-              // fit: FlexFit.tight,
               flex: 1,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _resetWordCnt();
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0, vertical: 18.0),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  'RESET',
-                  style: TextStyle(fontSize: widget.mediaFontSize),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3.0,
-            ),
-            Flexible(
-              // fit: FlexFit.tight,
-              flex: 1,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _findAll();
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 18.0),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  '본문보기',
-                  style: TextStyle(fontSize: widget.mediaFontSize),
+              child: IconButton(
+                iconSize: widget.iconSize,
+                onPressed: () => _openFile(),
+                icon: Icon(
+                  Icons.attach_file_sharp,
+                  size: widget.iconSize,
+                  color: Color.fromARGB(174, 66, 66, 66),
                 ),
               ),
             ),
           ],
         ),
-
-        Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: widget.paddingSize,
-              vertical: widget.screenHeight / 30),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Wrap(
-              direction: Axis.horizontal, // 나열 방향
-              // alignment: WrapAlignment.start, // 정렬 방식
-              alignment: WrapAlignment.start,
-              spacing: 4, // 좌우 간격
-              runSpacing: 0.5, // 상하 간격
-              children: [
-                Container(
-                  width: 250,
-                  child: TextFormField(
-                    initialValue: _fileName == ""
-                        ? "Please open your text file"
-                        : _fileName,
-                    enabled: false, // Disable user input
-                    decoration: InputDecoration(
-                      labelText: 'File Name',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  iconSize: widget.iconSize,
-                  onPressed: () => _openFile(),
-                  icon: Icon(
-                    Icons.attach_file_sharp,
-                    size: widget.iconSize,
-                    color: Color.fromARGB(174, 66, 66, 66),
-                  ),
-                ),
-                // IconButton(
-                //   icon: Icons.file_open,
-                //   onPressed: () => _openFile(),
-                //   style: TextButton.styleFrom(
-                //     minimumSize: Size.zero,
-                //     padding: EdgeInsets.zero,
-                //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                //   ),
-                // ),
-              ],
-            ),
-          ),
-        ),
-
         Padding(
           padding: EdgeInsets.all(widget.paddingSize),
           child: Container(
             height: widget.screenHeight * 0.65,
             decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment
-                  .spaceBetween, // Align the children at the ends
+            child: Stack(
               children: [
-                IconButton(
-                  iconSize: widget.iconSize,
-                  onPressed: () => {_decrementWordCnt()},
-                  icon: Icon(Icons.keyboard_double_arrow_left_rounded),
-                ),
-                Expanded(
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  top: 0,
                   child: Center(
                     child: SingleChildScrollView(
                       child: Text(
@@ -369,20 +286,135 @@ class _ControllPannalTabletState extends State<ControllPannalTablet> {
                     ),
                   ),
                 ),
-                IconButton(
-                  iconSize: widget.iconSize,
-                  onPressed: () {
-                    if (_contentsAll.length > wordCnt - 1 && wordCnt >= 0) {
-                      _incrementWordCnt();
-                    }
-                  },
-                  icon: Icon(Icons.keyboard_double_arrow_right_rounded),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(widget.paddingSize),
+          child: Container(
+            height: 50,
+            child: Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 130, // 버튼의 고정된 너비 설정, 원하는 너비로 수정하세요.
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (isPlaying) {
+                            _autoPlay();
+                          } else {
+                            _stopAutoPlay();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.zero,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 18.0),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          isPlaying ? 'RESTART' : 'STOP WATCHING',
+                          style: TextStyle(fontSize: widget.mediaFontSize),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    SizedBox(
+                      width: 100,
+                      height: 40,
+                      child: TextField(
+                        controller: _controller,
+                        onChanged: (value) {
+                          // _isTimeFilled = (value != 0);
+                          setState(() {
+                            _durationSpeed = int.parse(value);
+                          });
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Enter seconds',
+                          labelStyle: TextStyle(fontSize: widget.descFontSize),
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    SizedBox(
+                      width: 70, // 버튼의 고정된 너비 설정, 원하는 너비로 수정하세요.
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _resetWordCnt();
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.zero,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 18.0),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          'RESET',
+                          style: TextStyle(fontSize: widget.mediaFontSize),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    SizedBox(
+                      width: 70, // 버튼의 고정된 너비 설정, 원하는 너비로 수정하세요.
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _moveButtons();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.zero,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 18.0),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          'L R',
+                          style: TextStyle(fontSize: widget.mediaFontSize),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  left: _xPosition + (_moveToLeft ? _widgetSize - 100 : 0),
+                  bottom: _yPosition,
+                  child: IconButton(
+                    iconSize: widget.iconSize,
+                    onPressed: () => {_decrementWordCnt()},
+                    icon: Icon(Icons.arrow_back_ios_rounded),
+                  ),
+                ),
+                Positioned(
+                  left: _xPosition + (_moveToLeft ? 0 : _widgetSize),
+                  bottom: _yPosition,
+                  child: IconButton(
+                    iconSize: widget.iconSize,
+                    onPressed: () {
+                      if (_contentsAll.length > wordCnt - 1 && wordCnt >= 0) {
+                        _incrementWordCnt();
+                      }
+                    },
+                    icon: Icon(Icons.arrow_forward_ios_rounded),
+                  ),
                 ),
               ],
             ),
           ),
-        )
-        // )
+        ),
       ],
     );
   }

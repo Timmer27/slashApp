@@ -54,8 +54,7 @@ class _ControllPannalMobilePortraitState
   final List<int> words = [1, 2, 3, 4, 5, 6];
   // int _selectedWords = 1;
   int _selectedFontSize = 500;
-  int _durationSpeed = 1000;
-  int _selectedWords = 300;
+  int _durationSpeed = 1;
 
   String _fileName = '';
   int wordCnt = 0;
@@ -79,12 +78,47 @@ class _ControllPannalMobilePortraitState
   //     // _contentsAll.join(",");
   //     'Hello. It is a test file. It shows contents. I wish there is no error. Please! End of contents';
 
+  double _xPosition = -10.0;
+  double _yPosition = 30.0;
+  double _widgetSize = 50.0;
+  bool isPlaying = false;
+  bool _moveToLeft = false;
+
+  void _moveButtons() {
+    if (_moveToLeft) {
+      setState(() {
+        _xPosition = 0;
+        _moveToLeft = false;
+      });
+    } else {
+      setState(() {
+        _xPosition = MediaQuery.of(context).size.width - (_widgetSize * 1.8);
+        _moveToLeft = true;
+      });
+    }
+  }
+
+  void _stopAutoPlay() {
+    timer?.cancel();
+    setState(() {
+      isPlaying = !isPlaying; // Set isPlaying to false when stopping manually
+    });
+    print('stop');
+  }
+
   void _autoPlay() {
     // int count = wordCnt;
     timer?.cancel();
+
     int maxVal = _contentsAll.length;
-    wordCnt = 0;
-    timer = Timer.periodic(Duration(milliseconds: _durationSpeed), (timer) {
+    // wordCnt = 0;
+    setState(() {
+      isPlaying = !isPlaying;
+    });
+    print('test');
+    print('START');
+
+    timer = Timer.periodic(Duration(seconds: _durationSpeed), (timer) {
       if (wordCnt < maxVal) {
         setState(() {
           _showContent = _contentsAll[wordCnt];
@@ -92,9 +126,10 @@ class _ControllPannalMobilePortraitState
         });
       } else {
         timer.cancel();
+        setState(() {
+          isPlaying = false; // Set isPlaying to false when the timer completes
+        });
       }
-      print(wordCnt);
-      print(_durationSpeed);
     });
   }
 
@@ -129,7 +164,7 @@ class _ControllPannalMobilePortraitState
     setState(() {
       _showContent = _contentsAll[0];
       wordCnt = 0;
-      print(wordCnt);
+      isPlaying = true;
     });
   }
 
@@ -153,12 +188,12 @@ class _ControllPannalMobilePortraitState
         setState(() {
           _contentsAll = rawContents.split('/');
           _contents = rawContents;
+          _fileName = filename;
           try {
             _showContent = _contentsAll[0];
           } catch (e) {
             _showContent = '';
           }
-          _fileName = filename;
         });
       }
     }
@@ -201,121 +236,10 @@ class _ControllPannalMobilePortraitState
             const SizedBox(
               width: 30.0,
             ),
-            Flexible(
-                fit: FlexFit.tight,
-                flex: 2,
-                child: DropdownSearch<int>(
-                  items: const [250, 300, 350, 400, 450, 500],
-                  dropdownDecoratorProps: DropDownDecoratorProps(
-                      dropdownSearchDecoration: const InputDecoration(
-                        labelText: "Play Speed",
-                        // hintText: "country in menu mode",
-                      ),
-                      baseStyle: TextStyle(fontSize: widget.descFontSize)),
-                  onChanged: (value) => setState(() {
-                    int intVal = value ?? 300;
-                    if (intVal > 900) {
-                      _durationSpeed = 100;
-                    }
-                    _durationSpeed = 1000 - intVal;
-
-                    print(_durationSpeed);
-                  }),
-                  // onChanged: (val) => setState(() {
-                  //   if (val != null) {
-                  //     // null 여부 검사
-                  //     setState(() {
-                  //       _selectedWords = val;
-                  //       // 워드 별 배속 변경
-                  //       _durationSpeed = 1000 - (val * 100);
-                  //     });
-                  //   }
-                  // }),
-                  selectedItem: _selectedWords,
-                )),
-            const SizedBox(
-              width: 3.0,
-            ),
           ],
         ),
         const SizedBox(
           height: 10,
-        ),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            // font size selection dropdown button
-            Flexible(
-              // fit: FlexFit.tight,
-              flex: 1,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _autoPlay();
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0, vertical: 18.0),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  'START',
-                  style: TextStyle(fontSize: widget.mediaFontSize),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3.0,
-            ),
-            Flexible(
-              // fit: FlexFit.tight,
-              flex: 1,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _resetWordCnt();
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0, vertical: 18.0),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  'RESET',
-                  style: TextStyle(fontSize: widget.mediaFontSize),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 3.0,
-            ),
-            Flexible(
-              // fit: FlexFit.tight,
-              flex: 1,
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _findAll();
-                  });
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size.zero,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0, vertical: 18.0),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  '본문보기',
-                  style: TextStyle(fontSize: widget.mediaFontSize),
-                ),
-              ),
-            ),
-          ],
         ),
 
         Padding(
@@ -334,12 +258,10 @@ class _ControllPannalMobilePortraitState
                 Container(
                   width: 250,
                   child: TextFormField(
-                    initialValue: _fileName == ""
-                        ? "Please open your text file"
-                        : _fileName,
+                    initialValue: _fileName,
                     enabled: false, // Disable user input
                     decoration: InputDecoration(
-                      labelText: 'File Name',
+                      labelText: _fileName,
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -353,15 +275,6 @@ class _ControllPannalMobilePortraitState
                     color: Color.fromARGB(174, 66, 66, 66),
                   ),
                 ),
-                // IconButton(
-                //   icon: Icons.file_open,
-                //   onPressed: () => _openFile(),
-                //   style: TextButton.styleFrom(
-                //     minimumSize: Size.zero,
-                //     padding: EdgeInsets.zero,
-                //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -370,18 +283,15 @@ class _ControllPannalMobilePortraitState
         Padding(
           padding: EdgeInsets.all(widget.paddingSize),
           child: Container(
-            height: widget.screenHeight * 0.65,
+            height: widget.screenHeight * 0.55,
             decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment
-                  .spaceBetween, // Align the children at the ends
+            child: Stack(
               children: [
-                IconButton(
-                  iconSize: widget.iconSize,
-                  onPressed: () => {_decrementWordCnt()},
-                  icon: Icon(Icons.keyboard_double_arrow_left_rounded),
-                ),
-                Expanded(
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  top: 0,
                   child: Center(
                     child: SingleChildScrollView(
                       child: Text(
@@ -392,19 +302,142 @@ class _ControllPannalMobilePortraitState
                     ),
                   ),
                 ),
-                IconButton(
-                  iconSize: widget.iconSize,
-                  onPressed: () {
-                    if (_contentsAll.length > wordCnt - 1 && wordCnt >= 0) {
-                      _incrementWordCnt();
-                    }
-                  },
-                  icon: Icon(Icons.keyboard_double_arrow_right_rounded),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(widget.paddingSize),
+          child: Container(
+            height: 100,
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 100, // 버튼의 고정된 너비 설정, 원하는 너비로 수정하세요.
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _autoPlay();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 18.0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              'STOP WATCHING',
+                              style: TextStyle(fontSize: widget.mediaFontSize),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        SizedBox(
+                          width: 100,
+                          height: 35,
+                          child: TextField(
+                            // controller: _controller,
+                            onChanged: (value) {
+                              // _isTimeFilled = (value != 0);
+                              setState(() {
+                                _durationSpeed = int.parse(value);
+                              });
+                            },
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: 'Enter seconds',
+                              labelStyle:
+                                  TextStyle(fontSize: widget.descFontSize),
+                              border: const OutlineInputBorder(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 100, // 버튼의 고정된 너비 설정, 원하는 너비로 수정하세요.
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _resetWordCnt();
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 18.0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              'RESET',
+                              style: TextStyle(fontSize: widget.mediaFontSize),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        SizedBox(
+                          width: 100, // 버튼의 고정된 너비 설정, 원하는 너비로 수정하세요.
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _moveButtons();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size.zero,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 18.0),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text(
+                              'L R',
+                              style: TextStyle(fontSize: widget.mediaFontSize),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Positioned(
+                  left: _xPosition - 8,
+                  bottom: _yPosition,
+                  child: IconButton(
+                    iconSize: widget.iconSize,
+                    onPressed: () => {_decrementWordCnt()},
+                    icon: Icon(Icons.arrow_back_ios_rounded),
+                  ),
+                ),
+                Positioned(
+                  left: _xPosition + 14,
+                  bottom: _yPosition,
+                  child: IconButton(
+                    iconSize: widget.iconSize,
+                    onPressed: () {
+                      if (_contentsAll.length > wordCnt - 1 && wordCnt >= 0) {
+                        _incrementWordCnt();
+                      }
+                    },
+                    icon: Icon(Icons.arrow_forward_ios_rounded),
+                  ),
                 ),
               ],
             ),
           ),
-        )
+        ),
+
         // )
       ],
     );

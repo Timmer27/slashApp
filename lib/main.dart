@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveApp(builder: (context) {
       return MaterialApp(
-        title: 'Slash Program',
+        title: '위튼버그',
         // debugShowMaterialGrid: false,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

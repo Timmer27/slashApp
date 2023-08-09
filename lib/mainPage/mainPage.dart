@@ -63,8 +63,8 @@ class _MainPageState extends State<MainPage> {
                   children: [
                     // text size && words
                     ControllPannalTablet(
-                        mediaFontSize: 16.0,
-                        descFontSize: 18.0,
+                        mediaFontSize: 14.0,
+                        descFontSize: 16.0,
                         iconSize: 32.0,
                         paddingSize: paddingSize,
                         screenHeight: screenHeight,
@@ -81,7 +81,7 @@ class _MainPageState extends State<MainPage> {
                   children: [
                     // text size && words
                     ControllPannalTablet(
-                        mediaFontSize: 16.0,
+                        mediaFontSize: 14.0,
                         descFontSize: 18.0,
                         iconSize: 32.0,
                         paddingSize: paddingSize,
@@ -104,7 +104,7 @@ class _MainPageState extends State<MainPage> {
                   children: [
                     // text size && words
                     ControllPannalTablet(
-                        mediaFontSize: 16.0,
+                        mediaFontSize: 14.0,
                         descFontSize: 18.0,
                         iconSize: 32.0,
                         paddingSize: paddingSize,
@@ -122,7 +122,7 @@ class _MainPageState extends State<MainPage> {
                   children: [
                     // text size && words
                     ControllPannalTablet(
-                        mediaFontSize: 16.0,
+                        mediaFontSize: 12.0,
                         descFontSize: 18.0,
                         iconSize: 32.0,
                         paddingSize: paddingSize,
@@ -152,9 +152,9 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   // text size && words
                   ControllPannalTablet(
-                      mediaFontSize: 16.0,
-                      descFontSize: 18.0,
-                      iconSize: 32.0,
+                      mediaFontSize: 10.0,
+                      descFontSize: 13.0,
+                      iconSize: 25.0,
                       paddingSize: paddingSize,
                       screenHeight: screenHeight,
                       screenWidth: screenWidth,
@@ -170,9 +170,9 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   // text size && words
                   ControllPannalMobilePortrait(
-                      mediaFontSize: 16.0,
-                      descFontSize: 18.0,
-                      iconSize: 32.0,
+                      mediaFontSize: 10.0,
+                      descFontSize: 13.0,
+                      iconSize: 25.0,
                       paddingSize: paddingSize,
                       screenHeight: screenHeight,
                       screenWidth: screenWidth,
